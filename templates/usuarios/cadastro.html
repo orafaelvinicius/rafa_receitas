@@ -24,15 +24,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="contact-form-area">
-                    <form action="" method="">
+                    <form action="{% url 'cadastro' %}" method="POST">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="col-12 col-lg-12">
                                 <label for="nome_receita"><b>Nome completo</b></label>
-                                <input type="text" class="form-control" name="nome" placeholder="Ex.:Guilherme Lima" required>
+                                <input type="text" class="form-control" name="nome" placeholder="Ex.:Rafael Vinicius" required>
                             </div>
                             <div class="col-12 col-lg-12">
                                 <label for="email"><b>Email</b></label>
-                                <input type="email" class="form-control" name="email" placeholder="Ex.: guilherme@receitas.com" required>
+                                <input type="email" class="form-control" name="email" placeholder="Ex.: seu_email@receitas.com" required>
                             </div>
                             <div class="col-12 col-lg-6">
                                 <label for="password"><b>Senha</b></label>
