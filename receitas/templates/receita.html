@@ -16,8 +16,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <form action="#" method="post">
-                        <input type="search" name="search" placeholder="O que está procurando...">
+                    <form action="{% url 'buscar' %}">
+                        <input type="text" name="buscar" placeholder="O que está procurando...">
                         <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                     </form>
                 </div>
@@ -52,7 +52,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="receipe-slider owl-carousel">
-                        <img src="{% static 'img/bg-img/tomate_banner.jpg' %}">
+                        {% if receita.foto_receita == '' %}
+                            <img src="{% static 'img/bg-img/tomate_banner.jpg' %}">
+                        {% else %}
+                            <img src="{{ receita.foto_receita.url }}" alt="">
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -68,8 +72,8 @@
                             <span>{{ receita.data_receita }}</span>
                             <h2>{{ receita.nome_receita }}</h2>
                             <div class="receipe-duration">
-                                <h6>Preparo: {{ receita.tempo_preparo }}</h6>
-                                <h6>Rendimento: {{ receita.rendimento }}</h6>
+                                <h6>Preparo: {{ receita.tempo_preparo }} minutos </h6>
+                                <h6>Rendimento: {{ receita.rendimento }} porções </h6>
                                 <h6>Categoria: {{ receita.categoria }}</h6>
                                 <h6>Por: {{ receita.pessoa }}</h6>
                             </div>
