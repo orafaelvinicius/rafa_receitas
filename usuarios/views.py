@@ -1,3 +1,5 @@
+import time
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import auth, messages
@@ -9,19 +11,19 @@ def cadastro(request):
         email = request.POST['email']
         senha = request.POST['password']
         senha2 = request.POST['password2']
-        if not nome.strip():
+        if campo_vazio(nome):
             messages.error(request, 'O campo "nome" não pode ficar em branco')
             return redirect('cadastro')
 
-        if not email.strip():
+        if campo_vazio(email):
             messages.error(request, 'O campo "email" não pode ficar em branco.')
             return redirect('cadastro')
 
-        if senha != senha2:
+        if senhas_diferentes(senha, senha2):
             messages.error(request, 'As senhas não são iguais!')
             return redirect('cadastro')
 
-        if User.objects.filter(email=email).exists():
+        if usuario_cadastrado(email, nome):
             messages.error(request, 'Usuário já cadastrado.')
             return redirect('cadastro')
 
@@ -37,8 +39,8 @@ def login(request):
         email = request.POST['email']
         senha = request.POST['senha']
 
-        if email == "" or senha == "":
-            messages.error(request, 'os campos email e senha não podem ficar vazios')
+        if campo_vazio(email) or campo_vazio(senha):
+            messages.error(request, 'Os campos email e senha não podem ficar vazios')
             return redirect('login')
 
         if User.objects.filter(email=email).exists():
@@ -47,8 +49,11 @@ def login(request):
 
             if user is not None:
                 auth.login(request, user)
-                messages.success(request, 'login realizado com sucesso.')
+                messages.success(request, 'Login realizado com sucesso.')
                 return redirect('dashboard')
+            else:
+                messages.success(request, 'Login ou senha não está correto. Tente novamente')
+                return render(request, 'usuarios/login.html')
 
     return render(request, 'usuarios/login.html')
 
@@ -87,4 +92,14 @@ def cria_receita(request):
         return redirect('dashboard')
     else:
         return render(request, 'usuarios/cria_receita.html')
+
+def campo_vazio(campo):
+    return not campo.strip()
+
+def senhas_diferentes(senha, senha2):
+    return senha != senha2
+
+def usuario_cadastrado(email, nome):
+    return User.objects.filter(email=email).exists() or User.objects.filter(username=nome).exists()
+
 
