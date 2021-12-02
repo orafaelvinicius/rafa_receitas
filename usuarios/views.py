@@ -2,7 +2,9 @@ import time
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth, messages
+from django.contrib.auth.models import User
 from receitas.models import Receita
+
 
 def cadastro(request):
     if request.method == 'POST':
@@ -51,10 +53,10 @@ def login(request):
                 messages.success(request, 'Login realizado com sucesso.')
                 return redirect('dashboard')
             else:
-                messages.success(request, 'Login ou senha não está correto. Tente novamente')
+                messages.error(request, 'Login ou senha não está correto. Tente novamente')
                 return render(request, 'usuarios/login.html')
 
-    return render(request, 'usuarios/login.html')
+        return render(request, 'usuarios/login.html')
 
 def logout(request):
     auth.logout(request)
