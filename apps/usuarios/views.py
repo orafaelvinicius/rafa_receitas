@@ -7,6 +7,7 @@ from receitas.models import Receita
 
 
 def cadastro(request):
+    '''Cadastra uma nova pessoa no sistema'''
     if request.method == 'POST':
         nome = request.POST['nome']
         email = request.POST['email']
@@ -36,6 +37,7 @@ def cadastro(request):
         return render(request, 'usuarios/cadastro.html')
 
 def login(request):
+    '''Realiza o login do usuário no sistema'''
     if request.method == 'POST':
         email = request.POST['email']
         senha = request.POST['senha']
@@ -56,13 +58,15 @@ def login(request):
                 messages.error(request, 'Login ou senha não está correto. Tente novamente')
                 return render(request, 'usuarios/login.html')
 
-        return render(request, 'usuarios/login.html')
+    return render(request, 'usuarios/login.html')
 
 def logout(request):
+    '''Realiza a SAIDA do usuário do sistema'''
     auth.logout(request)
     return redirect('index')
 
 def dashboard(request):
+    '''Exibe as receitas exclusivas do usuário'''
     if request.user.is_authenticated:
         id = request.user.id
         receitas = Receita.objects.order_by('-data_receita').filter(pessoa=id)
@@ -76,10 +80,13 @@ def dashboard(request):
         return redirect('index')
 
 def campo_vazio(campo):
+    '''Retira os campos vazios'''
     return not campo.strip()
 
 def senhas_diferentes(senha, senha2):
+    '''Validação de senhas do cadastro'''
     return senha != senha2
 
 def usuario_cadastrado(email, nome):
+    '''Valida se o usuário já está cadastrado no sistema'''
     return User.objects.filter(email=email).exists() or User.objects.filter(username=nome).exists()
