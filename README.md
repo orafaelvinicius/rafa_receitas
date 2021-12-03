@@ -1,5 +1,5 @@
 # rafa_receitas
-Projeto de site para publicação de receitas feito com Django
+Projeto de site para publicação de receitas feito com Django+PostgreSQL
 
 Este projeto foi criado para praticar o desenvolvimento com o framework Django
 
