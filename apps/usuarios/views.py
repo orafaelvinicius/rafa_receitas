@@ -52,11 +52,13 @@ def login(request):
 
             if user is not None:
                 auth.login(request, user)
+                print('Login realizado com sucesso')
                 messages.success(request, 'Login realizado com sucesso.')
                 return redirect('dashboard')
             else:
+                print('Usuário não cadastrado')
                 messages.error(request, 'Login ou senha não está correto. Tente novamente')
-                return render(request, 'usuarios/login.html')
+                return redirect('login')
 
     return render(request, 'usuarios/login.html')
 
